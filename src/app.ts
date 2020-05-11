@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import { BotFrameworkAdapter, TurnContext, ConversationState, MemoryStorage } from "botbuilder";
 import { EmotionDetection } from "@botbuildercommunity/middleware-watson-nlu"
 import { MemoryScope, DialogSet } from "botbuilder-dialogs";
+import { TheBot } from "./bot";
 
 config();
 
@@ -26,8 +27,10 @@ adapter.use(new EmotionDetection(process.env.WATSON_API_KEY, process.env.WATSON_
 const conversationState: ConversationState = new ConversationState(new MemoryStorage());
 const dialogs: DialogSet = new DialogSet(conversationState.createProperty("dialogState"));
 
+const bot: TheBot = new TheBot(conversationState, dialogs);
+
 server.post("/api/messages", (req:restify.Request, res:restify.Response): void => {
-    adapter.processActivity(req, res, async(context:TurnContext): Promise<void> => {
-        await context.sendActivity('Hi!');
+    adapter.processActivity(req, res, async(context: TurnContext): Promise<void> => {
+        await bot.onTurn(context)
     });
 });
