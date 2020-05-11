@@ -1,0 +1,16 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES6",
+        "sourceMap": true,
+        "declaration": false,
+        "removeComments": true,
+        "outDir": "./dist",
+        "rootDir": "./src",
+        "allowJs": true
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

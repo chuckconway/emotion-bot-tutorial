@@ -1,0 +1,29 @@
+{
+  "name": "botframework-tut",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "build": "tsc",
+    "test": "mocha",
+    "audit": "npm audit",
+    "audit-fix":"npm audit fix"
+  },
+  "author": "Chuck Conway <chuck@cconway.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@botbuildercommunity/middleware-watson-nlu": "^1.1.1",
+    "botbuilder": "^4.8.0",
+    "botbuilder-dialogs": "^4.8.0",
+    "dotenv": "^8.2.0",
+    "ibm-watson": "^5.5.0",
+    "restify": "^8.5.1"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/restify": "^8.4.2",
+    "mocha": "^7.1.2",
+    "typescript": "^3.8.3"
+  }
+}
