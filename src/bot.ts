@@ -1,5 +1,5 @@
-import { ConversationState, TurnContext, ActionTypes, ActivityTypes } from "botbuilder";
-import { DialogSet, DialogContext, WaterfallDialog, WaterfallStepContext, DialogTurnResult, TextPrompt } from "botbuilder-dialogs";
+import { ConversationState, TurnContext, ActionTypes, ActivityTypes, Attachment } from "botbuilder";
+import { DialogSet, DialogContext, WaterfallDialog, WaterfallStepContext, DialogTurnResult, TextPrompt, AttachmentPrompt } from "botbuilder-dialogs";
 import { EXIT, Emotion } from "./schema";
 import { EmotionDetection } from "@botbuildercommunity/middleware-watson-nlu";
 import { getResponse } from "./utils";
@@ -15,6 +15,18 @@ export class TheBot {
             }
         ]));
     }
+
+    // private async addAttachmentPrompt(){
+    //
+    //     const dialogContext: DialogContext = await this.dialogs.createContext(context);
+    //     await dialogContext.continueDialog();
+    //
+    //
+    //
+    // ]));
+
+
+   // }
 
     private addHelloDialogs() {
         this.dialogs.add(new WaterfallDialog("hello", [
@@ -78,10 +90,36 @@ export class TheBot {
         if(context.activity.type === ActivityTypes.Message) {
             if(!context.responded){
                 if(context.activity.text === "hello"){
-                    await dialogContext.beginDialog("hello");
-                } else {
-                    await dialogContext.beginDialog("psychotherapy");
+
+                    this.dialogs.add(new AttachmentPrompt("attachmentPrompt"));
+                    //this.dialogs.add(new TextPrompt("textPrompt"));
+
+                   const attachmentPrompt = new WaterfallDialog("attachment",[
+                        async (step: WaterfallStepContext) => {
+                            return await dialogContext.prompt("attachmentPrompt", "Send me a picture!")
+                        },
+                        async (step: WaterfallStepContext) => {
+                            const attachments: any = step.result;
+
+                            await step.prompt("textPrompt", "File recieved, Thank you!");
+                            return await dialogContext.endDialog();
+                        }
+                    ])
+
+                    this.dialogs.add(attachmentPrompt);
+
+                    await dialogContext.beginDialog("attachment");
+
+                //     this.dialogs.add(new WaterfallDialog("attachment", [
+                //         async (step: WaterfallStepContext) {
+                //             await dialogContext.prompt("attachmentPrompt", "Send me a picture of  your favorite train!");
+                //         },
+                //         async (step: WaterfallStepContext) {
+
+                //             const attachments: Attachment[] = step.result.value;
+                // }))];
                 }
+
             }
 
             await this.state.saveChanges(context);

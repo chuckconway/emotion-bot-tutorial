@@ -22,7 +22,7 @@ adapter.onTurnError = async (context: TurnContext, error: Error) => {
     context.sendActivity("Sorry, an error has occured.");    
 };
 
-adapter.use(new EmotionDetection(process.env.WATSON_API_KEY, process.env.WATSON_ENDPOINT));
+//adapter.use(new EmotionDetection(process.env.WATSON_API_KEY, process.env.WATSON_ENDPOINT));
 
 const conversationState: ConversationState = new ConversationState(new MemoryStorage());
 const dialogs: DialogSet = new DialogSet(conversationState.createProperty("dialogState"));
